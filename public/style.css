@@ -9,7 +9,16 @@ main{
     text-align: center;
 }
 
-input[type='text'], input[type='email'], input[type='password']{
+form{
+    display: flex;
+    flex-direction: column;
+    max-width: 400px;
+    gap: 20px;
+    margin: auto;
+    align-items: center;
+}
+
+input{
     padding: 1rem;
     font-size: 20px;
 }
