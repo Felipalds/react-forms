@@ -1,5 +1,6 @@
 import React from 'react'
 import axios from 'axios'
+import formFields from './utils/formFields'
 
 function App() {
 
@@ -25,6 +26,12 @@ function App() {
       [id]: value
     })
 
+    if(id === "cep"){
+      if(form.cep.length === 8){
+        handleCep()
+      }
+    }
+
     console.log(form)
   }
 
@@ -44,13 +51,7 @@ function App() {
     }
   }
 
-  const handleCep = async({target}) => {
-    const { id, value } = target
-    setForm({
-      ...form,
-      [id]:value
-    })
-    if(form.cep.length === 8){
+  const handleCep = async() => {
       try{
         await fetch(`https://viacep.com.br/ws/${form.cep}/json`)
         .then(res => res.json())
@@ -58,7 +59,6 @@ function App() {
       } catch(err){
         return 0
       }
-    }
   }
 
   const setAddress = (data) => {
@@ -78,39 +78,15 @@ function App() {
       <h1>Formulários com React</h1>
       {form.email ? <h2>{form.email}</h2> : null}
       <form onSubmit={handleSubmit}>
-        <input
-          id="name"
-          name="name"
-          placeholder="Nome completo"
-          type="text"
-          value={form.name}
-          onChange={handleChange}>
-        </input>
-        <input 
-          id="email"
-          name="email"
-          placeholder="Digite seu email"
-          type="email"
-          value={form.email}
-          onChange={handleChange}>
-        </input>
-        <input
-          id="password"
-          name="email"
-          placeholder="Digite sua senha"
-          type="password"
-          value={form.password}
-          onChange={handleChange}
-          >
-        </input>
-        <input 
-          id="cep"
-          name="cep"
-          placeholder="CEP"
-          type="text"
-          value={form.cep}
-          onChange={handleCep}>
-        </input>
+        {formFields.map(({id, name, type, placeholder}) => (
+          <input
+            id={id}
+            name={name}
+            type={type}
+            placeholder={placeholder}
+            onChange={handleChange}>
+          </input>
+        ))}
 
         {form.cep ? form.cep.length === 8 ? 
         <>
